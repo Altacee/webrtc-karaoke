@@ -58,6 +58,11 @@ class KaraokeHost {
         try {
             this.updateStatus('Starting tab capture...');
 
+            // Check if getDisplayMedia is available
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) {
+                throw new Error('Screen sharing requires HTTPS. Please access via https:// or use localhost');
+            }
+
             // Request tab sharing
             this.localStream = await navigator.mediaDevices.getDisplayMedia({
                 video: { mediaSource: 'screen' },
