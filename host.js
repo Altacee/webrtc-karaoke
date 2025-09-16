@@ -28,7 +28,8 @@ class KaraokeHost {
                 const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
                 const hostname = window.location.hostname;
                 const port = window.location.port ? `:${window.location.port}` : '';
-                const serverUrl = `${protocol}//${hostname}${port}`;
+                const path = window.location.protocol === 'https:' ? '/ws' : '';
+                const serverUrl = `${protocol}//${hostname}${port}${path}`;
 
                 console.log('Connecting to WebSocket:', serverUrl);
                 this.socket = new WebSocket(serverUrl);
