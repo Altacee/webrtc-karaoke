@@ -1,0 +1,22 @@
+{
+  "name": "webrtc-karaoke",
+  "version": "1.0.0",
+  "description": "Simple WebRTC-based karaoke system for tab sharing",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "ws": "^8.14.2"
+  },
+  "keywords": [
+    "webrtc",
+    "karaoke",
+    "screen-sharing",
+    "tab-sharing"
+  ],
+  "author": "",
+  "license": "MIT"
+}

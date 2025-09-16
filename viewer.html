@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karaoke Viewer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        input {
+            padding: 15px;
+            font-size: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            margin: 10px;
+            width: 200px;
+        }
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        button:disabled {
+            background: #666;
+            cursor: not-allowed;
+        }
+        .status {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        #remoteVideo {
+            width: 100%;
+            max-width: 800px;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: none;
+        }
+        #remoteVideo.fullscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            max-width: none;
+            border-radius: 0;
+            margin: 0;
+            z-index: 1000;
+            background: black;
+            object-fit: contain;
+        }
+        .join-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>👁️ Karaoke Viewer</h1>
+
+        <div class="join-section">
+            <input type="text" id="roomIdInput" placeholder="Enter Room ID">
+            <button id="joinButton">Join Session</button>
+            <button id="leaveButton" disabled>Leave Session</button>
+            <button id="fullscreenButton" disabled>🔳 Fullscreen</button>
+        </div>
+
+        <div class="status">
+            <p id="status">Enter Room ID to join</p>
+        </div>
+
+        <video id="remoteVideo" autoplay></video>
+    </div>
+
+    <script src="viewer.js"></script>
+</body>
+</html>
