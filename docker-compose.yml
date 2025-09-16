@@ -16,13 +16,3 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
-    networks:
-      - karaoke-network
-
-networks:
-  karaoke-network:
-    driver: bridge
-
-volumes:
-  ssl-certs:
-    driver: local
