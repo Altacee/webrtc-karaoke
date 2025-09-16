@@ -24,10 +24,14 @@ class KaraokeHost {
     async connectToSignalingServer() {
         return new Promise((resolve, reject) => {
             try {
-                const serverUrl = window.location.hostname === 'localhost' ?
-                'ws://localhost:8080' :
-                `ws://${window.location.hostname}:8080`;
-            this.socket = new WebSocket(serverUrl);
+                // Auto-detect protocol: use wss:// for HTTPS pages, ws:// for HTTP pages
+                const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+                const hostname = window.location.hostname;
+                const port = window.location.port ? `:${window.location.port}` : '';
+                const serverUrl = `${protocol}//${hostname}${port}`;
+
+                console.log('Connecting to WebSocket:', serverUrl);
+                this.socket = new WebSocket(serverUrl);
 
                 this.socket.onopen = () => {
                     this.updateStatus('Connected to signaling server');
