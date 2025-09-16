@@ -1,22 +1,46 @@
 {
   "name": "webrtc-karaoke",
   "version": "1.0.0",
-  "description": "Simple WebRTC-based karaoke system for tab sharing",
-  "main": "server.js",
+  "description": "Production-ready WebRTC-based karaoke system for tab sharing",
+  "main": "server-production.js",
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=7.0.0"
+  },
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js"
+    "start": "NODE_ENV=production node server-production.js",
+    "dev": "NODE_ENV=development node server.js",
+    "docker:build": "docker build -t webrtc-karaoke .",
+    "docker:run": "docker run -p 8080:8080 webrtc-karaoke",
+    "docker:compose": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "lint": "eslint *.js",
+    "test": "npm run lint"
   },
   "dependencies": {
     "express": "^4.18.2",
-    "ws": "^8.14.2"
+    "ws": "^8.14.2",
+    "helmet": "^7.1.0",
+    "express-rate-limit": "^7.1.5"
+  },
+  "devDependencies": {
+    "eslint": "^8.54.0"
   },
   "keywords": [
     "webrtc",
     "karaoke",
     "screen-sharing",
-    "tab-sharing"
+    "tab-sharing",
+    "production",
+    "docker"
   ],
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/webrtc-karaoke.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/webrtc-karaoke/issues"
+  }
 }

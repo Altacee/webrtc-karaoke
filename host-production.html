@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karaoke Host</title>
+    <meta name="description" content="Host a WebRTC karaoke session by sharing your browser tab">
+    <meta name="robots" content="noindex, nofollow">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s;
+            user-select: none;
+        }
+        button:hover:not(:disabled) {
+            background: #45a049;
+            transform: translateY(-1px);
+        }
+        button:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .status {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            min-height: 20px;
+        }
+        .room-id {
+            font-size: 1.5em;
+            font-weight: bold;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            letter-spacing: 2px;
+            text-align: center;
+            user-select: all;
+            font-family: monospace;
+        }
+        #preview {
+            max-width: 100%;
+            border-radius: 8px;
+            margin: 20px 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        .connections {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+        .error {
+            color: #ff6b6b;
+            background: rgba(255, 107, 107, 0.1);
+        }
+        .success {
+            color: #51cf66;
+            background: rgba(81, 207, 102, 0.1);
+        }
+        .warning {
+            color: #ffd43b;
+            background: rgba(255, 212, 59, 0.1);
+        }
+        .support-info {
+            margin-top: 30px;
+            font-size: 14px;
+            opacity: 0.8;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎤 Karaoke Host</h1>
+        <p>Share your browser tab with viewers for a karaoke session</p>
+
+        <div class="controls">
+            <button id="startButton">Start Sharing Tab</button>
+            <button id="stopButton" disabled>Stop Sharing</button>
+        </div>
+
+        <div class="status">
+            <p id="status">Ready to share</p>
+            <div id="roomInfo" style="display: none;">
+                <p>Room ID:</p>
+                <div class="room-id" id="roomId" title="Click to select all"></div>
+                <p>Share this Room ID with viewers to join your session</p>
+            </div>
+        </div>
+
+        <video id="preview" autoplay muted style="display: none;"></video>
+
+        <div class="connections">
+            <h3>📺 Connected Viewers: <span id="viewerCount">0</span></h3>
+            <p id="connectionDetails" style="font-size: 14px; opacity: 0.8;">Waiting for viewers to join...</p>
+        </div>
+
+        <div class="support-info">
+            <p>
+                <strong>Need help?</strong><br>
+                • Make sure to allow screen sharing when prompted<br>
+                • Use Chrome, Firefox, Safari, or Edge for best compatibility<br>
+                • Viewers need the Room ID to join your session
+            </p>
+        </div>
+    </div>
+
+    <script src="host-production.js"></script>
+</body>
+</html>
