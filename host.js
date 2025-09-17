@@ -63,9 +63,28 @@ class KaraokeHost {
         try {
             this.updateStatus('Starting tab capture...');
 
-            // Check if getDisplayMedia is available
+            // Check if getDisplayMedia is available and provide helpful error message
             if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) {
-                throw new Error('Screen sharing requires HTTPS. Please access via https:// or use localhost');
+                const hostname = window.location.hostname;
+                const isLocalIP = /^(192\.168\.|10\.|172\.(1[6-9]|2[0-9]|3[01])\.)/.test(hostname);
+                const isLocalhost = hostname === 'localhost' || hostname === '127.0.0.1';
+
+                if (isLocalIP && window.location.protocol === 'http:') {
+                    throw new Error(`Screen sharing on IP addresses requires HTTPS. Options:
+
+🔧 Quick Fix (Chrome):
+   1. Open: chrome://flags/#unsafely-treat-insecure-origin-as-secure
+   2. Add: ${window.location.origin}
+   3. Restart Chrome
+
+🌐 Better Options:
+   • Use: http://localhost:8080/host.html (port forward)
+   • Use: https://stream.web.altacee.com/host.html (production)`);
+                } else if (!isLocalhost && window.location.protocol === 'http:') {
+                    throw new Error('Screen sharing requires HTTPS. Please access via https:// or use localhost');
+                } else {
+                    throw new Error('Screen sharing is not supported in this browser');
+                }
             }
 
             // Request tab sharing

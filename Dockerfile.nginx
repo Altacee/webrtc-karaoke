@@ -1,0 +1,15 @@
+FROM nginx:alpine
+
+# Install OpenSSL
+RUN apk add --no-cache openssl
+
+# Copy nginx configuration
+COPY nginx-port-8080.conf /etc/nginx/nginx.conf
+
+# Create SSL directory
+RUN mkdir -p /etc/nginx/ssl
+
+EXPOSE 8080
+
+# The command will be overridden by docker-compose
+CMD ["nginx", "-g", "daemon off;"]
