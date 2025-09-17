@@ -173,7 +173,12 @@ class KaraokeHost {
         console.log('Viewer joined:', viewerId);
 
         const pc = new RTCPeerConnection({
-            iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
+            iceServers: [
+                { urls: 'stun:stun.l.google.com:19302' },
+                { urls: 'stun:stun1.l.google.com:19302' },
+                { urls: 'stun:stun2.l.google.com:19302' }
+            ],
+            iceCandidatePoolSize: 10
         });
 
         this.peerConnections.set(viewerId, pc);
@@ -194,6 +199,21 @@ class KaraokeHost {
                     viewerId: viewerId
                 });
             }
+        };
+
+        // Monitor connection state
+        pc.onconnectionstatechange = () => {
+            console.log(`Viewer ${viewerId} connection state:`, pc.connectionState);
+            if (pc.connectionState === 'disconnected' || pc.connectionState === 'failed') {
+                console.log(`Removing disconnected viewer: ${viewerId}`);
+                this.peerConnections.delete(viewerId);
+                this.updateViewerCount();
+            }
+        };
+
+        // Monitor ICE connection state
+        pc.oniceconnectionstatechange = () => {
+            console.log(`Viewer ${viewerId} ICE state:`, pc.iceConnectionState);
         };
 
         // Create and send offer

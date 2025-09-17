@@ -162,7 +162,12 @@ class KaraokeViewer {
         console.log('Received offer');
 
         this.peerConnection = new RTCPeerConnection({
-            iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
+            iceServers: [
+                { urls: 'stun:stun.l.google.com:19302' },
+                { urls: 'stun:stun1.l.google.com:19302' },
+                { urls: 'stun:stun2.l.google.com:19302' }
+            ],
+            iceCandidatePoolSize: 10
         });
 
         // Handle ICE candidates
@@ -190,10 +195,33 @@ class KaraokeViewer {
             if (this.peerConnection.connectionState === 'connected') {
                 this.updateStatus('Connected to host');
             } else if (this.peerConnection.connectionState === 'disconnected') {
-                this.updateStatus('Disconnected from host');
+                this.updateStatus('Disconnected from host - attempting reconnection...');
+                // Don't immediately leave, give it a chance to reconnect
+                setTimeout(() => {
+                    if (this.peerConnection && this.peerConnection.connectionState === 'disconnected') {
+                        this.updateStatus('Connection lost - please rejoin');
+                        this.leaveSession();
+                    }
+                }, 5000);
             } else if (this.peerConnection.connectionState === 'failed') {
                 this.updateStatus('Connection failed');
                 this.leaveSession();
+            } else if (this.peerConnection.connectionState === 'connecting') {
+                this.updateStatus('Connecting to host...');
+            } else if (this.peerConnection.connectionState === 'new') {
+                this.updateStatus('Initializing connection...');
+            }
+        };
+
+        // Add ICE connection state monitoring
+        this.peerConnection.oniceconnectionstatechange = () => {
+            console.log('ICE connection state:', this.peerConnection.iceConnectionState);
+            if (this.peerConnection.iceConnectionState === 'failed') {
+                this.updateStatus('Network connection failed - check firewall/NAT');
+            } else if (this.peerConnection.iceConnectionState === 'disconnected') {
+                this.updateStatus('Network disconnected - reconnecting...');
+            } else if (this.peerConnection.iceConnectionState === 'connected') {
+                this.updateStatus('Network connected - receiving stream');
             }
         };
 
